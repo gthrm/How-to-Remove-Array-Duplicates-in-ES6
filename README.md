@@ -95,14 +95,14 @@ array.filter(
 
 Ниже приведен вывод из файла console.log, показанный выше. Дубликаты - это место, где индекс не совпадает с indexOf. Таким образом, в этих случаях условие будет ложным и не будет включено в наш отфильтрованный массив.
 
-|  item  | index  | indexOf| условие|
-| ------ | ------ | ------ | ------ |
-|    1   |   0    |    0   |   true |
-|    2   |   1    |    1   |   true |
-|    3   |   2    |    2   |   true |
-|    2   |   3    |    1   |  false |
-|    5   |   4    |    4   |   true |
-|    5   |   5    |    4   |  false |
+| item | index | indexOf | условие |
+|------|-------|---------|---------|
+| 1    | 0     | 0       | true    |
+| 2    | 1     | 1       | true    |
+| 3    | 2     | 2       | true    |
+| 2    | 3     | 1       | false   |
+| 5    | 4     | 4       | true    |
+| 5    | 5     | 4       | false   |
 
 ### Можно получить только повторяющиеся значения
 
@@ -116,14 +116,14 @@ array.filter((item, index) => array.indexOf(item) !== index)
 
 Опять же, если мы пройдемся по коду выше и увидим вывод:
 
-|  item  | index  | indexOf| условие|
-| ------ | ------ | ------ | ------ |
-|    1   |   0    |    0   |  false |
-|    2   |   1    |    1   |  false |
-|    3   |   2    |    2   |  false |
-|    2   |   3    |    1   |   true |
-|    5   |   4    |    4   |  false |
-|    5   |   5    |    4   |   true |
+| item | index | indexOf | условие |
+|------|-------|---------|---------|
+| 1    | 0     | 0       | false   |
+| 2    | 1     | 1       | false   |
+| 3    | 2     | 2       | false   |
+| 2    | 3     | 1       | true    |
+| 5    | 4     | 4       | false   |
+| 5    | 5     | 4       | true    |
 
 # Using reduce
 
@@ -142,9 +142,9 @@ array.reduce(
             // b. Final Array
             unique,
             // c. условие (item будет запушена если условие вернет false)
-            unique.include(item),
+            unique.includes(item),
             // d. функция-редуктор
-            unique.include(item) ? unique : [...unique, item]
+            unique.includes(item) ? unique : [...unique, item]
         )
         return unique.include(item) ? unique : [...unique, item]
     },
@@ -155,13 +155,52 @@ array.reduce(
 
 И вот вывод из console.log:
 
-|  item  | Final Array (ДО редусера)  | Запушить в Final Array? | Final Array (ПОСЛЕ редусера)|
-| ------ | -------------------------- | ----------------------- | --------------------------- |
-|    1   | []                         |    Да                   | [1]                         |
-|    2   | [1]                        |    Да                   | [1, 2]                      |
-|    3   | [1, 2]                     |    Да                   | [1, 2, 3]                   |
-|    2   | [1, 2, 3]                  |    Нет                  | [1, 2, 3]                   |
-|    5   | [1, 2, 3]                  |    Да                   | [1, 2, 3, 5]                |
-|    5   | [1, 2, 3, 5]               |    Нет                  | [1, 2, 3, 5]                |
+| item | Final Array (ДО редусера) | Запушить в Final Array? | Final Array (ПОСЛЕ редусера) |
+|------|---------------------------|-------------------------|------------------------------|
+| 1    | []                        | Да                      | [1]                          |
+| 2    | [1]                       | Да                      | [1, 2]                       |
+| 3    | [1, 2]                    | Да                      | [1, 2, 3]                    |
+| 2    | [1, 2, 3]                 | Нет                     | [1, 2, 3]                    |
+| 5    | [1, 2, 3]                 | Да                      | [1, 2, 3, 5]                 |
+| 5    | [1, 2, 3, 5]              | Нет                     | [1, 2, 3, 5]                 |
 
 Оригинал статьи [тут](https://medium.com/dailyjs/how-to-remove-array-duplicates-in-es6-5daa8789641c)
+
+>От себя хочу добавить то, что код представленный выше справедлив только для массивом из примитивом,
+>в случвае, если в массивах будут объекты, это работать не будет.
+
+## Чтобы сравнить два объекта между собой, можно использовать что-то вроде этого
+
+```javascript
+function compare(obj1, obj2) {
+    if (obj1 === obj2) {
+        return true;
+    }
+
+    if (obj1 === null || obj2 === null) {
+        return false;
+    }
+
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
+        return false;
+    }
+
+    let keysObj1 = Object.keys(obj1);
+    let keysObj2 = Object.keys(obj2);
+
+    if (keysObj1.length !== keysObj2.length) {
+        return false;
+    }
+
+    // for (let key of keysObj1) {
+    //     if (!compare(obj1[key], obj2[key])) {
+    //         return false;
+    //     }
+    // }
+    // return true;
+
+    return keysObj1.every(
+        (key) => compare(obj1[key], obj2[key])
+    );
+}
+```
