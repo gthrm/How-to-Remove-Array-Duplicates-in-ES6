@@ -164,4 +164,4 @@ array.reduce(
 |    5   | [1, 2, 3]                  |    Да                   | [1, 2, 3, 5]                |
 |    5   | [1, 2, 3, 5]               |    Нет                  | [1, 2, 3, 5]                |
 
-Оригинал статьи [тут](https://nodejs.org/)https://medium.com/dailyjs/how-to-remove-array-duplicates-in-es6-5daa8789641c)
+Оригинал статьи [тут](https://medium.com/dailyjs/how-to-remove-array-duplicates-in-es6-5daa8789641c)
