@@ -47,6 +47,16 @@ const reduceMethod = array.reduce(
 
 console.log(reduceMethod);
 
+// Объекты
+
+function checkIn(item) {
+    newArray.shift();
+    const findTrue = newArray.find(itemnewArray => compare(item, itemnewArray) === true);
+    if (!findTrue) {
+        return true
+    }
+    return false
+}
 
 function compare(obj1, obj2) {
     if (obj1 === obj2) {
@@ -87,18 +97,3 @@ console.log('====================================')
 console.log(filterArray)
 console.log('====================================')
 
-function checkIn(item) {
-    newArray.shift();
-    const dataArray = newArray.map(
-        checkInItem => {
-            const status = compare(item, checkInItem)
-            return status
-        }
-    )
-    const findTrue = dataArray.find(item => item === true)
-    if (!findTrue) {
-        return true
-    } else {
-        return false
-    }
-}
