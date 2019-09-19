@@ -172,6 +172,16 @@ array.reduce(
 ## Чтобы сравнить два объекта между собой, можно использовать что-то вроде этого
 
 ```javascript
+
+function checkIn(item) {
+    newArray.shift();
+    const findTrue = newArray.find(itemnewArray => compare(item, itemnewArray) === true);
+    if (!findTrue) {
+        return true
+    }
+    return false
+}
+
 function compare(obj1, obj2) {
     if (obj1 === obj2) {
         return true;
@@ -191,16 +201,15 @@ function compare(obj1, obj2) {
     if (keysObj1.length !== keysObj2.length) {
         return false;
     }
-
-    // for (let key of keysObj1) {
-    //     if (!compare(obj1[key], obj2[key])) {
-    //         return false;
-    //     }
-    // }
-    // return true;
-
     return keysObj1.every(
         (key) => compare(obj1[key], obj2[key])
     );
 }
+
+const arrayOfObject = [{ name: 'Ok' }, { num: 'lol' }, { num: 'lol' }, { name: 'Ok' }, { name: 'Nok' }, { num: 'lol', non: { lol: 1, ok: true } }]
+const newArray = JSON.parse(JSON.stringify(arrayOfObject)) //для проверки
+
+const filterArray = arrayOfObject.filter(item => checkIn(item)) //
+
+console.log(filterArray)
 ```
