@@ -80,5 +80,25 @@ function compare(obj1, obj2) {
     );
 }
 
-console.log(compare({ name: 'Ok' }, { num: 3 }));
-console.log(compare({ name: 'Ok' }, { name: 'Ok' }));
+const arrayOfObject = [{ name: 'Ok' }, { num: 'lol' }, { num: 'lol' }, { name: 'Ok' }, { name: 'Nok' }, { num: 'lol', non: { lol: 1, ok: true } }]
+const newArray = JSON.parse(JSON.stringify(arrayOfObject))
+const filterArray = arrayOfObject.filter(item => checkIn(item)) //
+console.log('====================================')
+console.log(filterArray)
+console.log('====================================')
+
+function checkIn(item) {
+    newArray.shift();
+    const dataArray = newArray.map(
+        checkInItem => {
+            const status = compare(item, checkInItem)
+            return status
+        }
+    )
+    const findTrue = dataArray.find(item => item === true)
+    if (!findTrue) {
+        return true
+    } else {
+        return false
+    }
+}
